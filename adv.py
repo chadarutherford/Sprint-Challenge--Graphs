@@ -3,7 +3,7 @@ from ast import literal_eval
 from room import Room
 from player import Player
 from world import World
-from util import Stack, Queue
+from util import Queue
 
 # Load world
 world = World()
@@ -48,6 +48,23 @@ def initialize_room_map():
     for direction in current.get_exits():
         room_map[direction] = '?'
         map[current.id] = room_map
+
+# method to pick an unvisited random room
+def unvisited_exit_from_room():
+    # set up the player's current room in a variable
+    current = player.current_room
+    # create an empty array to hold the unvisited rooms
+    unvisited = []
+
+    # loop through all the directions the player can go from the current room,
+    # and only append the rooms that still have a '?'
+    for direction in player.current_room.get_exits():
+        if map[current.id][direction] == '?':
+            unvisited.append(direction)
+
+    # return a randomly chosen room from the array 
+    return random.choice(unvisited)
+
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
