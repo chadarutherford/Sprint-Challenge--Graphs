@@ -95,6 +95,9 @@ def find_unvisited_room(id):
             # and add them to the path and enqueue the whole path for all rooms
             for next_room in map[room].values():
                 q.enqueue(path + [next_room])
+
+initialize_room_map()
+
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
