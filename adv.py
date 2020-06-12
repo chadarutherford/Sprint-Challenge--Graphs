@@ -34,6 +34,20 @@ map = {}
 # convenience method to remove some verbosity for travel
 def travel_to(direction):
     player.travel(direction)
+
+# method to create a new room map for all rooms in the graph
+def initialize_room_map():
+    # create a variable to hold the current room
+    current = player.current_room
+    # create an empty dictionary to hold the keys and values
+    # from the room and directions
+    room_map = {}
+
+    # initialize the dictionary to hold values such as { 'n' : '?' }
+    # for all directions leading from the current room
+    for direction in current.get_exits():
+        room_map[direction] = '?'
+        map[current.id] = room_map
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
