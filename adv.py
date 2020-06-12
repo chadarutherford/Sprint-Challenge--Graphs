@@ -65,6 +65,36 @@ def unvisited_exit_from_room():
     # return a randomly chosen room from the array 
     return random.choice(unvisited)
 
+
+# ---------BFS---------
+def find_unvisited_room(id):
+    # create a queue (BFS requires a queue)
+    # and enqueue the starting vertex in a list (to keep track of the traveled path)
+    # create a visited set to keep track of visited nodes
+    q = Queue()
+    q.enqueue([id])
+    visited = set()
+
+    # while the queue still has items
+    while q.size() > 0:
+        # grab the first item in the queue
+        path = q.dequeue()
+        # and grab the vertex from the last index in the path
+        room = path[-1]
+
+        # if the room isn't in the visited set
+        if room not in visited:
+            # if an array of only '?' values has items,
+            # immediately return the path
+            if list(map[room].values()).count('?') != 0:
+                return path
+            # add it
+            visited.add(room)
+
+            # grab the values from the map pertaining to the current room id
+            # and add them to the path and enqueue the whole path for all rooms
+            for next_room in map[room].values():
+                q.enqueue(path + [next_room])
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
