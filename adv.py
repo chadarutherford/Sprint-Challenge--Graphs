@@ -98,6 +98,33 @@ def find_unvisited_room(id):
 
 initialize_room_map()
 
+# set up a while loop to continue traversing while the map dictionary's length
+# is smaller than the number of items in the room graph
+while len(map) < len(room_graph):
+    # if the count of '?' in the map for the current room is not 0
+    if list(map[player.current_room.id].values()).count('?') != 0:
+        # create a variable to hold the current room's id
+        previous = player.current_room.id
+        # grab a random exit that is unvisited
+        next_room = unvisited_exit_from_room()
+        # travel to the random exit
+        # and append it to the traversal path
+        travel_to(next_room)
+        traversal_path.append(next_room)
+        # set up a new pointer to the player's current room after the travel
+        next = player.current_room.id
+
+        # if the next room doesn't have a room map,
+        # initialize one and add it to the map
+        if next not in map:
+            initialize_room_map()
+
+        map[previous][next_room] = next
+
+        # create a reversed dictionary to supply the direction we just came from
+        backtrack_directions = { 'n' : 's' , 's' : 'n','w' : 'e', 'e' : 'w' }
+        # and set the direction to the previous room in this room's map
+        map[next][backtrack_directions[next_room]] = previous
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
