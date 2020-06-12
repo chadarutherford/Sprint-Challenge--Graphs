@@ -125,6 +125,23 @@ while len(map) < len(room_graph):
         backtrack_directions = { 'n' : 's' , 's' : 'n','w' : 'e', 'e' : 'w' }
         # and set the direction to the previous room in this room's map
         map[next][backtrack_directions[next_room]] = previous
+    else:
+        # now we have no more '?'s to find (end of the road),
+        # we need to backtrack back to the beginning
+        # grab a path to backtrack
+        reverse = find_unvisited_room(player.current_room.id)
+        # for every room in the backwards path,
+        # and every direction in the room, if the direction at the current room's id
+        # equals the room in the reverse path, travel there, and append it to the traversal path
+        for room in reverse:
+            for direction in map[player.current_room.id]:
+                if map[player.current_room.id][direction] == room:
+                    travel_to(direction)
+                    traversal_path.append(direction)
+                    break
+
+
+# TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
